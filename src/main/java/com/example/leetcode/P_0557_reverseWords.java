@@ -23,15 +23,50 @@ public class P_0557_reverseWords {
 
     public static void main(String[] args) {
 
-        String a = "hannah" ;
+        String a = "hello I'm jack" ;
+        String b = "Let's take LeetCode contest" ;
+        String c = "a" ;
+        String d = "You like me";
 
         P_0557_reverseWords binarySearch = new P_0557_reverseWords();
-        binarySearch.reverseWords(a);
-        System.out.println(Arrays.toString( a ));
+
+        System.out.println(binarySearch.reverseWords(a));
+        System.out.println(binarySearch.reverseWords(b));
+        System.out.println(binarySearch.reverseWords(c));
+        System.out.println(binarySearch.reverseWords(d));
     }
 
     public String reverseWords(String s) {
+        if (s.length()<2){
+            return s;
+        }
+        char[] chars = s.toCharArray();
+        int lastSpace = 0;
+        for (int j=0; j<chars.length ; j++) {
+            if (chars[j] == ' ' || j==chars.length-1){
+                int high = j-1;
+                if (j==chars.length-1){
+                    high = j;
+                }
+                reverseString(chars,lastSpace,high);
+                lastSpace = j+1;
+            }
+        }
+        return new String(chars);
+    }
 
+
+    public void reverseString(char[] s,int low,int high) {
+        if ( high-low<1 ){
+            return;
+        }
+        while (low<high){
+            char temp = s[low];
+            s[low] = s[high];
+            s[high] = temp;
+            low++;
+            high--;
+        }
     }
 
 

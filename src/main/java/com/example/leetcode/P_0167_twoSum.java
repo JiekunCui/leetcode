@@ -69,7 +69,7 @@ public class P_0167_twoSum {
                 j--;
             } else {
                 i++;
-            };
+            }
         }
         return null;
     }
