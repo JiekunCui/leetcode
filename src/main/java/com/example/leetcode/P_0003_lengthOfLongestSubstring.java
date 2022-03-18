@@ -46,14 +46,14 @@ public class P_0003_lengthOfLongestSubstring {
 
     public static void main(String[] args) {
 
-        String s = "abcabcbb";
+        String s = "abcdefgbhijk";
         String s1 = "dvdf";
         String s2 = "pwwkew";
 
         P_0003_lengthOfLongestSubstring binarySearch = new P_0003_lengthOfLongestSubstring();
-        System.out.println(binarySearch.lengthOfLongestSubstring(s));
-        //System.out.println(binarySearch.lengthOfLongestSubstring(s1));
-        //System.out.println(binarySearch.lengthOfLongestSubstring(s2));
+        System.out.println(binarySearch.lengthOfLongestSubstring1(s));
+        System.out.println(binarySearch.lengthOfLongestSubstring1(s1));
+        System.out.println(binarySearch.lengthOfLongestSubstring1(s2));
     }
 
     public int lengthOfLongestSubstring(String s) {
@@ -85,42 +85,25 @@ public class P_0003_lengthOfLongestSubstring {
             //不管是否更新left，都要更新 s.charAt(i) 的位置！
             map.put(s.charAt(i) , i);
             maxLen = Math.max(maxLen , i-left+1);
-            System.out.println("char=" + s.charAt(i) + ",left=" + left + ",maxLet=" + maxLen + ",map=" + map.toString() );
+            //System.out.println("char=" + s.charAt(i) + ",left=" + left + ",maxLet=" + maxLen + ",map=" + map.toString() );
         }
 
         return maxLen;
     }
 
     public int lengthOfLongestSubstring1(String s) {
-
-        if (s.length() == 0) {
-            return 0;
-        }
-
-        if (s.length() == 1) {
-            return 1;
-        }
-
-        int[] a = new int[s.length()];
-        Set<Character> set = new HashSet<>(s.length() / 75 * 100);
-        set.add(s.charAt(0));
-        int max = 1;
-        a[0] = 1;
-        for (int i = 1; i < s.length(); i++) {
-            char target = s.charAt(i);
-
-            if (set.contains(target)) {
-                set.clear();
+        int maxLen = 0;
+        int left = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (map.containsKey(c)){
+                left = Math.max( map.get(c) + 1,left);
             }
-            set.add(target);
-
-            int size = set.size();
-            if (size > max) {
-                max = size;
-            }
+            map.put(c, i);
+            maxLen = Math.max(maxLen,i-left+1);
         }
-        return max;
-
+        return maxLen;
     }
 
     public int lengthOfLongestSubstring2(String s) {
