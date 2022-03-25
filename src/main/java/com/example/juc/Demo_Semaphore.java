@@ -11,7 +11,7 @@ public class Demo_Semaphore {
     /**
      * 停车场一共有5个车位
      */
-    private Semaphore semaphore = new Semaphore(5);
+    private Semaphore semaphore = new Semaphore(2);
 
     /**
      * 创建20个线程同时抢夺
@@ -34,7 +34,7 @@ public class Demo_Semaphore {
             long tyrGetPermits = System.currentTimeMillis();
             semaphore.acquire();
             long getPermits = System.currentTimeMillis();
-            Thread.sleep(1000);
+            Thread.sleep(5000);
             System.out.println(String.format("%s-park 1s \t,%s,%s,%s", Thread.currentThread().getName(),
                                              tyrGetPermits,getPermits,System.currentTimeMillis()) );
         } catch (InterruptedException e) {

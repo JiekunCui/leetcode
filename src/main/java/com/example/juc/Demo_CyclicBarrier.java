@@ -22,7 +22,7 @@ public class Demo_CyclicBarrier {
     /**
      * 创建20个线程同时抢夺
      */
-    private CountDownLatch cdl = new CountDownLatch(20);
+    private CountDownLatch cdl = new CountDownLatch(24);
 
     public static void main(String[] args) {
         Demo_CyclicBarrier demo_cyclicBarrier = new Demo_CyclicBarrier();
