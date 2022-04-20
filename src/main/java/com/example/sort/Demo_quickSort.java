@@ -5,8 +5,8 @@ import java.util.Arrays;
 public class Demo_quickSort {
 
     public static void main(String[] args) {
-        int[] ints = {12, 34, 56, 32, 21, 58, 6, 89, 99, 23, 45};
-        int[] ints1 = {45, 12, 34, 56, 32, 21, 6, 89, 99, 23, 58};
+        int[] ints = {12,13,0,2,4,7,45};
+        int[] ints1 = {45, 12};
         Demo_quickSort demo_quickSort = new Demo_quickSort();
         demo_quickSort.quickSort(ints, 0, ints.length - 1);
         // demo_quickSort.quickSort(ints1, 0, ints.length-1);
@@ -41,9 +41,9 @@ public class Demo_quickSort {
             }
         }
 
-        System.out.println(
-                String.format("%s,povit=%s,right=%s,left=%s,begin=%s,end=%s", Arrays.toString(nums), povit, right, left,
-                              begin, end));
+        //System.out.println(
+        //        String.format("%s,povit=%s,right=%s,left=%s,begin=%s,end=%s", Arrays.toString(nums), povit, right, left,
+        //                      begin, end));
         quickSort(nums, begin, right - 1);
         quickSort(nums, right + 1, end);
 

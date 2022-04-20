@@ -38,7 +38,7 @@ public class Demo_CyclicBarrier {
 
         try {
             long tyrGetPermits = System.currentTimeMillis();
-            cyclicBarrier.await(5, TimeUnit.SECONDS);
+            cyclicBarrier.await(10, TimeUnit.SECONDS);
             long getPermits = System.currentTimeMillis();
             Thread.sleep(1000);
             System.out.println(String.format("%s-park 1s \t,%s,%s,%s", Thread.currentThread().getName(),

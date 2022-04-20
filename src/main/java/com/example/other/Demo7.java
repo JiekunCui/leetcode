@@ -4,21 +4,28 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.example.leetcode.node.ListNode;
+import com.example.leetcode.node.ListNodeUtil;
+
 public class Demo7 {
 
     public static void main(String[] args) throws ParseException {
-        String param = "2021-01-01|2022-3-10";
+        ListNode listNode = ListNodeUtil.arrToListNode(new int[] {1, 2, 3, 4, 5, 6});
+        ListNodeUtil.printListNode(listNode);
+        ListNodeUtil.printListNode(new Demo7().reverseList( listNode ));
+    }
 
-        String[] split = param.split("\\|");
+    public ListNode reverseList(ListNode listNode){
+        ListNode dummy = new ListNode();
+        while (listNode!=null){
+            ListNode dnext = dummy.next;
+            ListNode lnext = listNode.next;
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date begin = dateFormat.parse(split[0]);
-        Date end = dateFormat.parse(split[1]);
+            listNode.next = dnext;
+            dummy.next = listNode;
 
-        while (begin.compareTo(  end ) <= 0){
-
-
-        }
-
+            listNode = lnext;
+        };
+        return dummy.next;
     }
 }
