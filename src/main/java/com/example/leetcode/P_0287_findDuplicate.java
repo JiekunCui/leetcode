@@ -51,7 +51,7 @@ public class P_0287_findDuplicate {
         P_0287_findDuplicate findDuplicate = new P_0287_findDuplicate();
         //System.out.println(findDuplicate.findDuplicate(new int[]{1,3,4,2,2}));
         //System.out.println(findDuplicate.findDuplicate(new int[]{3,3,3,4,2}));;
-        System.out.println(findDuplicate.findDuplicate(findDuplicate.getNums()));
+        System.out.println(findDuplicate.findDuplicate(new int[]{1,3,4,2,2}));
 
     }
 
@@ -76,23 +76,6 @@ public class P_0287_findDuplicate {
                 return nums[slow];
             }
         }
-    }
-
-    private int[] getNums() throws Exception {
-
-        InputStream fileInputStream = this.getClass().getClassLoader().getResourceAsStream("data.txt");
-        InputStreamReader inputStream = new InputStreamReader(fileInputStream);
-        BufferedReader reader = new BufferedReader(inputStream);
-        int[] nums = new int[100001];
-
-        String s = null;
-        int i = 0;
-        while ((s = reader.readLine())!=null){
-            Integer integer = Integer.valueOf(s);
-            nums[i++] = integer;
-        }
-
-        return nums;
     }
     
 }

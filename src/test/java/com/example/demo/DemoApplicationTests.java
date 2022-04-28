@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.event.UserModPasswordEvent;
+import com.example.demo.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,8 @@ class DemoApplicationTests {
 
 	@Autowired
 	private	ApplicationEventPublisher publisher;
+	@Autowired
+	private UserService userService;
 
 	@Test
 	void contextLoads() {
@@ -22,6 +25,8 @@ class DemoApplicationTests {
 		e.setUserId(1L);
 		e.setNewPwd("12345");
 		e.setOldPwd("abcdef");
+
+		userService.hashCode();
 
 		System.out.println(Thread.currentThread().getId());
 		publisher.publishEvent(e);
