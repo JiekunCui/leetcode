@@ -46,86 +46,61 @@ public class P_0034_searchRange {
 
         P_0034_searchRange binarySearch = new P_0034_searchRange();
 
-        System.out.println(binarySearch.findLast(a,  8));
+        System.out.println(Arrays.toString(binarySearch.searchRange(a,  8)));
+        System.out.println(Arrays.toString(binarySearch.searchRange(a,  7)));
+        System.out.println(Arrays.toString(binarySearch.searchRange(a,  10)));
+        System.out.println(Arrays.toString(binarySearch.searchRange(a,  5)));
     }
-
     public int[] searchRange(int[] nums, int target) {
         if (nums.length == 0 || target < nums[0] || target > nums[nums.length - 1]) {
             return new int[] {-1, -1};
         }
 
-        //找出一个出现的位置
-        //int[] index = getIndex(nums, 0, nums.length - 1, target);
-        //
-        //if (index==null){
-        //    return new int[] {-1, -1};
-        //}
-        //
-        int[] ret = new int[2];
-        //
-        //ret[0] = findFirst(nums,index[0],index[1],target);
-        //ret[1] = findLast(nums,index[1],index[2],target);
-        ret[0] = findFirst(nums,0,nums.length-1,target);
-        ret[1] = findLast(nums,0,nums.length-1,target);
+        int firstPos = findFirstPos(nums,target);
 
-        return ret;
+        if (firstPos==-1){
+            return new int[] {-1, -1};
+        }
+
+        int lastPos = findLastPos(nums,target);
+        return new int[]{firstPos,lastPos};
     }
 
-    public int findFirst(int[] nums, int target){
-        return findFirst(nums,0,nums.length-1,target);
-    }
+    private int findLastPos(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length-1;
+        while (left<right){
 
-    public int findLast(int[] nums, int target){
-        return findLast(nums,0,nums.length-1,target);
-    }
-
-    public int findFirst(int[] nums, int left, int right, int target) {
-        while (left < right) {
-            int mid = (left + right) / 2;
-            System.out.println(left + "," + mid + "," + right);
-            if (nums[mid] < target) {
-                left = mid + 1 ;
-            } else if (nums[mid] >= target) {
-                right = mid - 1;
+            //这里和寻找第一个位置不同，
+            //nums = [5,7,7,8,8,10], target = 8
+            //这里 left = 3,right=4 时 如果不加1，始终有mid=3 则会出现死循环
+            int mid = (right+left + 1)>>1;
+            if (nums[mid]<target){
+                left = mid + 1;
+            }else if (nums[mid]==target){
+                left=mid;
+            }else {
+                right = mid-1;
             }
         }
-        System.out.println(left  + "," + right);
+        return left;
+    }
+
+    private int findFirstPos(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length-1;
+        while (left<right){
+            int mid = (right+left)>>1;
+            if (nums[mid]<target){
+                left = mid + 1;
+            }else if (nums[mid]==target){
+                right=mid;
+            }else {
+                right = mid-1;
+            }
+        }
         if (nums[left]==target){
             return left;
-        }
-
-        return -1;
-    }
-
-    public int findLast(int[] nums, int low, int high, int target) {
-        while(low <= high){
-            int mid = low + (high-low)/2;
-            System.out.println(low + "," + mid + "," + high);
-            if(nums[mid] <= target){
-                low = mid + 1;
-            }else if(nums[mid] > target){
-                high = mid - 1;
-            }
-
-        }
-        System.out.println(low  + "," + high);
-        if (nums[high] == target) {
-            return high;
-        } else {
-            return -1;
-        }
-    }
-    public int findLast1(int[] nums, int left, int right, int target) {
-        while (left < right) {
-            int mid = (left + right) / 2;
-            if (nums[mid] <= target) {
-                left = mid + 1 ;
-            } else if (nums[mid] > target) {
-                right = mid - 1;
-            }
-        }
-        if(nums[right] == target){
-            return right;
         }
         return -1;
     }

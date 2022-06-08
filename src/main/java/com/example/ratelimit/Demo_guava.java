@@ -1,5 +1,7 @@
 package com.example.ratelimit;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 
 import com.google.common.util.concurrent.RateLimiter;
@@ -7,7 +9,7 @@ import com.google.common.util.concurrent.RateLimiter;
 public class Demo_guava {
 
     private RateLimiter limiter = RateLimiter.create(5.0);
-    private CountDownLatch cdl = new CountDownLatch(20);
+    private CountDownLatch cdl = new CountDownLatch(50);
 
     public static void main(String[] args) {
 
@@ -20,13 +22,14 @@ public class Demo_guava {
             }, "T" + i).start();
         }
 
+
     }
 
     private void testMethod(){
-
+        Date begin = new Date();
         double acquire = limiter.acquire();
-
-        System.out.println(String.format( "%s-success,%s",Thread.currentThread().getName(),System.currentTimeMillis() ) );
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss.sss");
+        System.out.println(String.format( "%s-get permit,%s,%s",Thread.currentThread().getName(),format.format(begin),format.format(new Date()) ) );
     }
 
 
