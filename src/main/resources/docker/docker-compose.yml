@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    network_mode: host
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    volumes:
+      - D:/docker/kafka/config/zk:/bitnami/zookeeper
+  kafka:
+    image: 'bitnami/kafka:latest'
+    network_mode: host
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    volumes:
+      - D:/docker/kafka/config/kafka:/bitnami/kafka
