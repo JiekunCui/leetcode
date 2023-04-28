@@ -8,14 +8,14 @@ import com.google.common.util.concurrent.RateLimiter;
 
 public class Demo_guava {
 
-    private RateLimiter limiter = RateLimiter.create(5.0);
-    private CountDownLatch cdl = new CountDownLatch(50);
+    private RateLimiter limiter = RateLimiter.create(2.0);
+    private CountDownLatch cdl = new CountDownLatch(4);
 
     public static void main(String[] args) {
 
         Demo_guava demo_guava = new Demo_guava();
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 12; i++) {
             new Thread(() -> {
                 demo_guava.cdl.countDown();
                 demo_guava.testMethod();

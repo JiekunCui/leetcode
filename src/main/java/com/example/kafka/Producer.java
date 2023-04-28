@@ -15,10 +15,11 @@ public class Producer{
 
     public Producer(String topicName) {
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
-        //props.put("acks", "all");
+        props.put("bootstrap.servers", "localhost:9090,localhost:9091,localhost:9092");
+        props.put("acks", "all");
         props.put("retries", 1);
-        //props.put("batch.size", 16384);
+        props.put("batch.size", 16384);
+        props.put("connections.max.idle.ms", -1);
         props.put("key.serializer", StringSerializer.class.getName());
         props.put("value.serializer", StringSerializer.class.getName());
         this.producer = new KafkaProducer<>(props);
@@ -28,7 +29,7 @@ public class Producer{
     public void sendMsg(String message) {
         try {
             Future<RecordMetadata> send =
-                    producer.send(new ProducerRecord<>(topic, message));
+                    producer.send(new ProducerRecord<>(topic,message, message));
             RecordMetadata record = send.get();
             System.out.println("sendMsg:" + record);
         } catch (Exception e) {

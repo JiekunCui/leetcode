@@ -9,21 +9,23 @@ import com.example.spring.importlearn.MyImportBeanDefinitionRegistrar;
 import com.example.spring.importlearn.MyImportSelector;
 import com.example.spring.importlearn.Normal;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({Normal.class, MyImportSelector.class, MyDeferredImportSelector.class, MyImportBeanDefinitionRegistrar.class})
+//@Import({Normal.class, MyImportSelector.class, MyDeferredImportSelector.class, MyImportBeanDefinitionRegistrar.class})
+@ComponentScan("com.example.spring.importlearn")
 public class TestConfig {
     //@Bean
     //public MyBeanPostProcessor _myBeanPostProcessor(){
     //    return new MyBeanPostProcessor();
     //}
 
-    @Bean
-    public User user(){
-        return new User();
-    }
+    //@Bean
+    //public User user(){
+    //    return new User();
+    //}
 
 
 

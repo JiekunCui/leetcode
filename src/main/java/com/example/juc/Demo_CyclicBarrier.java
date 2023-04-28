@@ -22,14 +22,23 @@ public class Demo_CyclicBarrier {
     /**
      * 创建20个线程同时抢夺
      */
-    private CountDownLatch cdl = new CountDownLatch(24);
+    private CountDownLatch cdl = new CountDownLatch(3);
 
     public static void main(String[] args) {
         Demo_CyclicBarrier demo_cyclicBarrier = new Demo_CyclicBarrier();
-        for (int i = 10; i < 30; i++) {
+        for (int i = 0; i < 12; i++) {
+            try {
+                Thread.sleep(1000);
+            } catch ( Exception e) {
+                e.printStackTrace();
+            } finally {
+                //semaphore.release();
+            }
+
             new Thread(() -> {
-                demo_cyclicBarrier.cdl.countDown();
+                //demo_cyclicBarrier.cdl.countDown();
                 demo_cyclicBarrier.park();
+
             }, "T" + i).start();
         }
     }

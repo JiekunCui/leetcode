@@ -1,6 +1,9 @@
 package com.example.spring.bean;
 
 public class User {
+    public User(){
+        System.out.println("user construct method ....");
+    }
     private Long id;
     private String name;
 
@@ -20,8 +23,4 @@ public class User {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", name='" + name + '\'' + '}';
-    }
 }

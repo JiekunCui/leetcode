@@ -1,0 +1,16 @@
+
+spring:
+  kafka:
+    producer:
+      acks: 1
+      bootstrap-servers: localhost:9090,localhost:9091,localhost:9092
+      retries: 2
+      batch-size: 16384
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      bootstrap-servers: localhost:9090,localhost:9091,localhost:9092
+      enable-auto-commit: false
+      max-poll-records: 100
+      group-id: demo-test
+      key-deserializer: org.apache.kafka.common.serialization.StringSerializer

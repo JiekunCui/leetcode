@@ -1,0 +1,273 @@
+最近公共祖先（LCA）问题：
++ [236. 二叉树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
++ [1676. 二叉树的最近公共祖先 IV](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-iv/)
++ [1644. 二叉树的最近公共祖先 II](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-ii/)
++ [235. 二叉搜索树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/)
++ [1650. 二叉树的最近公共祖先 III](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-iii/)
+
+### 一、两个节点的最近公共祖先：[236. 二叉树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+利用后序遍历的思想，如果一个节点能够在它的左右子树中分别找到 p 和 q，则该节点为 LCA 节点。
+
+**如果 LCA 节点刚好是 p 或 q 节点呢？** 那么当我们找到这个节点的时候，会直接返回，而这个节点的兄弟节点返回的一定为空，那么他们的父节点就会将这个 LCA 节点返回，这样也可以得到正确的答案。
+
+#### 代码
+
+* []
+
+```C++
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        return dfs(root, p, q);
+    }
+private:
+    TreeNode* dfs(TreeNode *root, TreeNode *p, TreeNode *q){
+        if(root == nullptr){
+            return nullptr;
+        }
+
+        // 如果找到 p 或 q，直接返回
+        if(root == p || root == q){
+            return root;
+        }
+
+        TreeNode *left = dfs(root->left, p, q);
+        TreeNode *right = dfs(root->right, p, q);
+
+        // 后序遍历位置，如果左右两边都找到了，则返回当前节点
+        if(left != nullptr && right != nullptr){
+            return root;
+        }
+        // 如果只有一边找到，则返回这一边
+        return left == nullptr ? right : left;
+    }
+};
+```
+
+* []
+
+```test
+/**
+* 打印信息，查看如果 p 或 q 其中一个节点为 LCA 节点的情况，测试用例为：    
+* [3,5,1,6,2,0,8,null,null,7,4]
+* 5
+* 4
+*/
+
+[0] node: 3
+    [1] node: 5
+    [1] return 5
+    [1] node: 1
+        [2] node: 0
+            [3] node: nullptr
+            [3] retrun nullptr
+            [3] node: nullptr
+            [3] retrun nullptr
+        [2] return nullptr
+        [2] node: 8
+            [3] node: nullptr
+            [3] retrun nullptr
+            [3] node: nullptr
+            [3] retrun nullptr
+        [2] return nullptr
+    [1] return nullptr
+[0] return 5
+
+```
+
+### 二、多个节点的最近公共祖先：[1676. 二叉树的最近公共祖先 IV](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-iv/)
+
+本题输入了一个二叉树节点的数组，让你求**多个节点**的最近公共祖先。
+
+函数签名如下：
+
+* 
+
+```
+TreeNode* lowestCommonAncestor(TreeNode *root, vector<TreeNode*> &nodes);
+```
+
+思路与上题相似。只不过在找节点的时候需要到 TreeNode 数组中找。这里可以进行一个优化，为了更快地查找，可以用哈希表来存储 TreeNode 数组中的所有节点。
+
+#### 代码
+
+* []
+
+```C++
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode *root, vector<TreeNode*> &nodes){
+        return dfs(root, nodes);
+    }
+private:
+    TreeNode* dfs(TreeNode *root, vector<TreeNode*> &nodes){
+        if(root == nullptr){
+            return nullptr;
+        }
+
+        // 如果找到节点，直接返回（这里可以用哈希表优化）
+        for(TreeNode *node : nodes){
+            if(root == node){
+                return root;
+            }
+        }
+
+        TreeNode *left = dfs(root->left, nodes);
+        TreeNode *right = dfs(root->right, nodes);
+
+        // 后序遍历位置，如果左右两边都找到了，则返回当前节点
+        if(left != nullptr && right != nullptr){
+            return root;
+        }
+        // 如果只有一边找到，则返回这一边
+        return left == nullptr ? right : left;
+    }
+};
+```
+
+### 三、节点可能不在二叉树中：[1644. 二叉树的最近公共祖先 II](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-ii/)
+
+上面两道题的题目明确指出了**给定的节点一定存在与二叉树中**。**而这道题目给定的两个节点 p 和 q 不一定存在在二叉树中**，如果不存在我们需要返回空指针。
+
+我们需要使用两个变量来记录是否遍历到了 p 和 q 节点。
+
+在前面的代码中，如果我们找到了 p 或 q 节点，那就直接返回，不用往下找了，这是因为我们可以保证一定能找到这两个节点。但是在本题中，我们如果只找了了 p 节点是不能直接返回的，因为 q 节点可能不在二叉树中，我们需要查找 p 节点的子树中有没有 q 节点。所以我们需要将判断语句放在后序遍历的位置，这样才能保证我们遍历到了整棵树的所有节点。
+
+#### 代码
+
+* []
+
+```C++
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode *root, TreeNode* p, TreeNode* q){
+        TreeNode *res = dfs(root, p, q);
+        if(!foundP || !foundQ){
+            // 如果不存在，返回空指针
+            return nullptr;
+        }
+        return res;
+    }
+private:
+    bool foundP = false;
+    bool foundQ = false;
+    TreeNode* dfs(TreeNode *root, TreeNode *p, TreeNode *q){
+        if(root == nullptr){
+            return nullptr;
+        }
+
+        TreeNode *left = dfs(root->left, p, q);
+        TreeNode *right = dfs(root->right, p, q);
+
+        if(left != nullptr && right != nullptr){
+            return root;
+        }
+
+        // 将这条语句移动到后序遍历的位置
+        if(root == p || root == q){
+            if(root == p) foundP = true;
+            if(root == q) foundQ = true;
+            return root;
+        }
+
+        return left == nullptr ? right : left;
+    }
+};
+```
+
+### 四、二叉搜索树的最进公共祖先： [235. 二叉搜索树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+
+如果我们的二叉树变成**二叉搜索树**，那么可以利用二叉搜索树的性质来解决。
+
+我们将 p 和 q 节点排序，保证 p < q，那么他们的公共祖先一定在 [p, q] 区间中。而我们找到的第一个满足这个条件的节点，一定是他们的最近公共祖先。
+
+#### 代码
+
+* []
+
+```C++
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        // 给 p 和 q 排序
+        if(p->val > q->val){
+            swap(p, q);
+        }
+        return dfs(root, p, q); 
+    }
+private:
+    TreeNode* dfs(TreeNode *root, TreeNode *p, TreeNode *q){
+        if(root == nullptr){
+            return nullptr;
+        }
+
+        // 如果当前节点小，那就往右子树找
+        if(root->val < p->val){
+            return dfs(root->right, p, q);
+        }
+
+        // 如果当前节点大，就往左子树找
+        if(root->val > q->val){
+            return dfs(root->left, p, q);
+        }
+
+        // 如果找到了，返回当前节点
+        return root;
+    }
+};
+```
+
+### 五、包含父节点指针的二叉树：[1650. 二叉树的最近公共祖先 III - 力扣（LeetCode）](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-iii/)
+
+本题中的二叉树节点包含指向父节点的指针：
+
+* 
+
+```
+class Node {
+    int val;
+    Node left;
+    Node right;
+    Node parent;
+};
+```
+
+给你输入一棵存在于二叉树中的两个节点p和q，请你返回它们的最近公共祖先，函数签名如下：
+
+* 
+
+```
+Node* lowestCommonAncestor(Node *p, Node *q);
+```
+
+既然有指向父节点的指针，那么这道题就可以转化为 [160. 相交链表](https://leetcode.cn/problems/intersection-of-two-linked-lists/) 问题。Node 节点中的 parent 指针可以看做是链表中的 next 指针。
+
+#### 代码
+
+* []
+
+```C++
+class Solution{
+public:
+    Node lowestCommonAncestor(Node p, Node q) {
+        Node l1 = p, l2 = q;
+        while (l1 != l2) {
+            // l1 走一步，如果走到根节点，转到 q 节点
+            if (l1 == nullptr){
+                l1 = q;
+            } else {
+                l1 = l1->parent;
+            }           
+            // b 走一步，如果走到根节点，转到 p 节点
+            if(l2 == nullptr){
+                l2 = p;
+            } else {
+                l2 = l2->parent;
+            }
+        }
+        return l1;
+    }
+};
+```
+

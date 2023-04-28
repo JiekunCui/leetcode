@@ -1,0 +1,34 @@
+看了一圈还没人写过这个方法。
+
+注意到数据大小范围为$-10^4 <= nums[i] <= 10^4$，不算大，则可以利用数组下标进行计数排序，负数需要转成正数，之后数组从后往前遍历到第k个即可。
+
+直接看代码：
+
+* []
+
+```C++
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        int res = 0;
+        vector<int> hash(2e4 + 1, 0);
+        for (auto n : nums) {
+            hash[n + 1e4]++;
+        }
+        for (int i = 2e4; i >= 0; i--) {
+            if (hash[i]) {
+                k -= hash[i];
+                if (k <= 0) {
+                    res = i - 1e4;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+};
+```
+
+- 时间复杂度：$O(n)$
+- 空间复杂度：$O(C)$，$C$是常数，和数据大小范围相关
+

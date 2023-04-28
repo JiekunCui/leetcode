@@ -8,6 +8,10 @@ import com.example.leetcode.node.ListNode;
 
 public class Demo7 {
 
+    static {
+        System.out.println("static");
+    }
+
 
     static class Father{
         public int a = 1;
@@ -33,9 +37,10 @@ public class Demo7 {
         }
     }
 
-    public static void main(String[] args) throws ParseException {
-
+    public static void main(String[] args) throws ParseException, ClassNotFoundException {
         Father son = new Son();
+        ClassLoader classLoader = Father.class.getClassLoader();
+        Class.forName("com.example.other.P_cloud");
         System.out.println("gay a=" + son.a);
     }
 
